@@ -15,7 +15,7 @@ const StyledHeader = styled.header`
   align-items: center;
   padding: 0 7em;
   min-height: 6rem;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 5px 15px -3px rgba(0, 0, 0, 0.1);
 `
 
 const Heading = styled.h1`
