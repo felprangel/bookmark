@@ -1,7 +1,9 @@
 import { createGlobalStyle } from 'styled-components'
 
 export const GlobalStyle = createGlobalStyle`
-  :root {}
+  :root {
+    --white: #FFFBFB;
+  }
 
   * {
     margin: 0;
