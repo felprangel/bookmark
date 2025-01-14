@@ -5,15 +5,20 @@ export default function Index() {
   return (
     <>
       <Header />
-      <Button>+ Adicionar Livro</Button>
+      <ButtonContainer>
+        <Button>+ Adicionar Livro</Button>
+      </ButtonContainer>
     </>
   )
 }
 
-const Button = styled.button`
+const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`
+
+const Button = styled.button`
   border: 0;
   margin: 1.5em 0;
   font-size: 1.4em;
