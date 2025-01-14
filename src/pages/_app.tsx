@@ -1,5 +1,5 @@
 import { GlobalStyle } from '@/styles/globals'
-import '@/styles/globals.css'
+import '@/styles/globals.ts'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 
