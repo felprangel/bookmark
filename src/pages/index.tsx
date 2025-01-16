@@ -1,3 +1,4 @@
+import { BookCard } from '@/components/BookCard'
 import { Header } from '@/components/Header'
 import styled from 'styled-components'
 
@@ -8,6 +9,9 @@ export default function Index() {
       <ButtonContainer>
         <Button>+ Adicionar Livro</Button>
       </ButtonContainer>
+      <CardsContainer>
+        <BookCard />
+      </CardsContainer>
     </>
   )
 }
@@ -31,4 +35,11 @@ const Button = styled.button`
   &:hover {
     background-color: var(--dark-gray);
   }
+`
+
+const CardsContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+  padding: 0em 7em 2em 7em;
+  gap: 40px;
 `
