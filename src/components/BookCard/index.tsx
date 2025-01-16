@@ -6,8 +6,8 @@ export function BookCard() {
       <Heading>Título</Heading>
       <Heading>Autor</Heading>
       <Heading>Páginas</Heading>
-      <ReadButton>Lido</ReadButton>
-      <DeleteButton>Remover</DeleteButton>
+      <Button>Lido</Button>
+      <Button>Remover</Button>
     </CardContainer>
   )
 }
@@ -30,6 +30,32 @@ const Heading = styled.h2`
   font-weight: 600;
 `
 
-const ReadButton = styled.button``
+const Button = styled.button`
+  border: 0;
+  padding: 0.5em 1em;
+  width: 100%;
+  border-radius: 0.7em;
+  font-size: 1.3em;
+  font-weight: 600;
+  outline: none;
+  transition: 150ms linear;
 
-const DeleteButton = styled.button``
+  // TODO: Adicionar lógica para mudar a cor do botão condicionalmente
+  /* background-color: #53d769;
+
+  &:hover {
+    background-color: #46c263;
+  }
+
+  background-color: #478ecc;
+
+  &:hover {
+    background-color: #3e80b9;
+  }
+
+  background-color: #f0eef1;
+
+  &:hover {
+    background-color: #fc3d39;
+  } */
+`
