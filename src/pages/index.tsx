@@ -1,4 +1,3 @@
-import { BookCard } from '@/components/BookCard'
 import { Header } from '@/components/Header'
 import styled from 'styled-components'
 
@@ -9,9 +8,7 @@ export default function Index() {
       <ButtonContainer>
         <Button>+ Adicionar Livro</Button>
       </ButtonContainer>
-      <CardsContainer>
-        <BookCard />
-      </CardsContainer>
+      <CardsContainer></CardsContainer>
     </>
   )
 }
