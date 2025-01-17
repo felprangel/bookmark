@@ -1,7 +1,13 @@
 import styled from 'styled-components'
 
-// TODO: Adicionar props para receber os dados do livro
-export function BookCard() {
+interface BookCardProps {
+  title: string
+  author: string
+  pages: number
+  read: boolean
+}
+
+export function BookCard(props: BookCardProps) {
   return (
     <CardContainer>
       <Heading>Título</Heading>
