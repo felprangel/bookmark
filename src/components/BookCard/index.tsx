@@ -13,8 +13,8 @@ export function BookCard(props: BookCardProps) {
       <Heading>{props.title}</Heading>
       <Heading>{props.author}</Heading>
       <Heading>{props.pages}</Heading>
-      {props.read ? <Button>Lido</Button> : <Button>Não Lido</Button>}
-      <Button>Remover</Button>
+      {props.read ? <Button read>Lido</Button> : <Button>Não Lido</Button>}
+      <Button remove>Remover</Button>
     </CardContainer>
   )
 }
