@@ -10,10 +10,10 @@ interface BookCardProps {
 export function BookCard(props: BookCardProps) {
   return (
     <CardContainer>
-      <Heading>Título</Heading>
-      <Heading>Autor</Heading>
-      <Heading>Páginas</Heading>
-      <Button>Lido</Button>
+      <Heading>{props.title}</Heading>
+      <Heading>{props.author}</Heading>
+      <Heading>{props.pages}</Heading>
+      {props.read ? <Button>Lido</Button> : <Button>Não Lido</Button>}
       <Button>Remover</Button>
     </CardContainer>
   )
