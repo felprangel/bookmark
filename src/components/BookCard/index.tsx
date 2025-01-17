@@ -37,7 +37,7 @@ const Heading = styled.h2`
   font-weight: 600;
 `
 
-const Button = styled.button`
+const Button = styled.button<{ read?: boolean; remove?: boolean }>`
   border: 0;
   padding: 0.5em 1em;
   width: 100%;
@@ -47,22 +47,9 @@ const Button = styled.button`
   outline: none;
   transition: 150ms linear;
 
-  // TODO: Adicionar lógica para mudar a cor do botão condicionalmente
-  /* background-color: #53d769;
+  background-color: ${props => (props.read ? '#53d769' : props.remove ? '#f0eef1' : '#478ecc')};
 
   &:hover {
-    background-color: #46c263;
+    background-color: ${props => (props.read ? '#46c263' : props.remove ? '#fc3d39' : '#3e80b9')};
   }
-
-  background-color: #478ecc;
-
-  &:hover {
-    background-color: #3e80b9;
-  }
-
-  background-color: #f0eef1;
-
-  &:hover {
-    background-color: #fc3d39;
-  } */
 `
