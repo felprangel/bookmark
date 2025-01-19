@@ -6,6 +6,13 @@ interface ModalProps {
   onClose: () => void
 }
 
+interface BookProps {
+  title: string
+  author: string
+  pages: number
+  read: boolean
+}
+
 export function BookModal(props: ModalProps) {
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault()
