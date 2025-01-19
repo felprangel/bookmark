@@ -1,3 +1,4 @@
+import { BookCard } from '@/components/BookCard'
 import { BookModal, BookProps } from '@/components/BookModal'
 import { Header } from '@/components/Header'
 import { useEffect, useState } from 'react'
@@ -20,7 +21,17 @@ export default function Index() {
       <ButtonContainer>
         <Button onClick={() => setModalOpen(true)}>+ Adicionar Livro</Button>
       </ButtonContainer>
-      <CardsContainer></CardsContainer>
+      <CardsContainer>
+        {books.map(book => (
+          <BookCard
+            key={`${book.title}_${book.pages}`}
+            title={book.title}
+            author={book.author}
+            pages={book.pages}
+            read={book.read}
+          />
+        ))}
+      </CardsContainer>
       <BookModal open={modalOpen} onClose={() => setModalOpen(false)} />
     </>
   )
