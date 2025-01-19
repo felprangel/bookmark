@@ -1,4 +1,4 @@
-import { Modal } from '@mui/material'
+import { Dialog } from '@mui/material'
 
 interface ModalProps {
   open: boolean
@@ -6,8 +6,8 @@ interface ModalProps {
 
 export function BookModal(props: ModalProps) {
   return (
-    <Modal open={props.open}>
+    <Dialog open={props.open}>
       <h1>Teste</h1>
-    </Modal>
+    </Dialog>
   )
 }
