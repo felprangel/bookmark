@@ -5,6 +5,7 @@ import styled from 'styled-components'
 
 export default function Index() {
   const [modalOpen, setModalOpen] = useState<boolean>(false)
+  const [books, setBooks] = useState<BookProps[]>([])
 
   return (
     <>
