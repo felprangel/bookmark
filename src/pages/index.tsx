@@ -1,9 +1,16 @@
 import { BookModal, BookProps } from '@/components/BookModal'
 import { Header } from '@/components/Header'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 export default function Index() {
+  useEffect(() => {
+    const books = localStorage.getItem('books')
+    if (books) {
+      setBooks(JSON.parse(books))
+    }
+  }, [])
+
   const [modalOpen, setModalOpen] = useState<boolean>(false)
   const [books, setBooks] = useState<BookProps[]>([])
 
