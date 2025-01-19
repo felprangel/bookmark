@@ -5,6 +5,8 @@ interface BookCardProps {
   author: string
   pages: number
   read: boolean
+  removeBook(): void
+  handleRead(): void
 }
 
 export function BookCard(props: BookCardProps) {
@@ -13,8 +15,16 @@ export function BookCard(props: BookCardProps) {
       <Heading>{props.title}</Heading>
       <Heading>{props.author}</Heading>
       <Heading>{props.pages}</Heading>
-      {props.read ? <Button read>Lido</Button> : <Button>Não Lido</Button>}
-      <Button remove>Remover</Button>
+      {props.read ? (
+        <Button onClick={props.handleRead} read>
+          Lido
+        </Button>
+      ) : (
+        <Button onClick={props.handleRead}>Não Lido</Button>
+      )}
+      <Button onClick={props.removeBook} remove>
+        Remover
+      </Button>
     </CardContainer>
   )
 }
