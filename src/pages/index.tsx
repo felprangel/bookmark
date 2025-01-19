@@ -1,4 +1,4 @@
-import { BookModal } from '@/components/BookModal'
+import { BookModal, BookProps } from '@/components/BookModal'
 import { Header } from '@/components/Header'
 import { useState } from 'react'
 import styled from 'styled-components'
