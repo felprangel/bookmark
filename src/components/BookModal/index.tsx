@@ -7,9 +7,22 @@ interface ModalProps {
 }
 
 export function BookModal(props: ModalProps) {
+  function handleSubmit(event: React.FormEvent) {
+    event.preventDefault()
+    const form = event.target as HTMLFormElement
+    const formData = new FormData(form)
+    const book = {
+      title: formData.get('title'),
+      author: formData.get('author'),
+      pages: formData.get('pages'),
+      read: !!formData.get('status')
+    }
+    console.log(book)
+  }
+
   return (
     <Dialog open={props.open} onClose={props.onClose}>
-      <StyledForm>
+      <StyledForm onSubmit={handleSubmit}>
         <h1>Adicionar Livro</h1>
         <StyledInput type="text" name="title" placeholder="Título" maxLength={100} required />
         <StyledInput type="text" name="author" placeholder="Autor" maxLength={100} required />
