@@ -14,10 +14,10 @@ export function BookModal(props: ModalProps) {
         <input type="text" name="title" placeholder="Título" maxLength={100} required />
         <input type="text" name="author" placeholder="Autor" maxLength={100} required />
         <input type="number" name="pages" placeholder="Páginas" min={0} max={10000} required />
-        <div>
+        <CheckboxContainer>
           <h2>Lido?</h2>
           <input type="checkbox" name="status" />
-        </div>
+        </CheckboxContainer>
         <button>Pronto!</button>
       </StyledForm>
     </Dialog>
@@ -28,4 +28,9 @@ const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
+`
+
+const CheckboxContainer = styled.div`
+  display: flex;
+  justify-content: center;
 `
