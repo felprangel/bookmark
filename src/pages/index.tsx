@@ -83,6 +83,6 @@ const Button = styled.button`
 const CardsContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
-  padding: 0em 7em 2em 7em;
+  padding: 0em 1em 2em 1em;
   gap: 40px;
 `
