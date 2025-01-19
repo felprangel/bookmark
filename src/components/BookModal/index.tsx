@@ -28,6 +28,7 @@ export function BookModal(props: ModalProps) {
     const books = localStorage.getItem('books')
     const parsedBooks: BookProps[] = books ? JSON.parse(books) : []
     localStorage.setItem('books', JSON.stringify([...parsedBooks, book]))
+    window.dispatchEvent(new Event('storage'))
     props.onClose()
   }
 
