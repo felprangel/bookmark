@@ -2,6 +2,8 @@ import { Header } from '@/components/Header'
 import styled from 'styled-components'
 
 export default function Index() {
+  const [modalOpen, setModalOpen] = useState<boolean>(false)
+
   return (
     <>
       <Header />
