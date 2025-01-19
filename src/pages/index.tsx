@@ -6,7 +6,7 @@ export default function Index() {
     <>
       <Header />
       <ButtonContainer>
-        <Button>+ Adicionar Livro</Button>
+        <Button onClick={() => setModalOpen(true)}>+ Adicionar Livro</Button>
       </ButtonContainer>
       <CardsContainer></CardsContainer>
       <BookModal open={modalOpen} onClose={() => setModalOpen(false)} />
