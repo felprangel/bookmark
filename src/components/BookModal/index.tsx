@@ -11,9 +11,9 @@ export function BookModal(props: ModalProps) {
     <Dialog open={props.open} onClose={props.onClose}>
       <StyledForm>
         <h1>Adicionar Livro</h1>
-        <input type="text" name="title" placeholder="Título" maxLength={100} required />
-        <input type="text" name="author" placeholder="Autor" maxLength={100} required />
-        <input type="number" name="pages" placeholder="Páginas" min={0} max={10000} required />
+        <StyledInput type="text" name="title" placeholder="Título" maxLength={100} required />
+        <StyledInput type="text" name="author" placeholder="Autor" maxLength={100} required />
+        <StyledInput type="number" name="pages" placeholder="Páginas" min={0} max={10000} required />
         <CheckboxContainer>
           <h2>Lido?</h2>
           <Checkbox name="status" />
@@ -28,6 +28,18 @@ const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
+`
+
+const StyledInput = styled.input`
+  border: none;
+  background-color: #f0eef1;
+  padding: 1.3em;
+  margin: 0.5em 0;
+  border-radius: 0.4em;
+  width: 23em;
+  font-size: 1em;
+  font-weight: 700;
+  outline: none;
 `
 
 const CheckboxContainer = styled.div`
