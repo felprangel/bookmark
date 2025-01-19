@@ -11,10 +11,10 @@ export function BookModal(props: ModalProps) {
     event.preventDefault()
     const form = event.target as HTMLFormElement
     const formData = new FormData(form)
-    const book = {
-      title: formData.get('title'),
-      author: formData.get('author'),
-      pages: formData.get('pages'),
+    const book: BookProps = {
+      title: formData.get('title') as string,
+      author: formData.get('author') as string,
+      pages: Number(formData.get('pages')),
       read: !!formData.get('status')
     }
     console.log(book)
