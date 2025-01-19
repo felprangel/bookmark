@@ -15,6 +15,20 @@ export default function Index() {
   const [modalOpen, setModalOpen] = useState<boolean>(false)
   const [books, setBooks] = useState<BookProps[]>([])
 
+  function handleRead(index: number) {
+    const updatedBooks = [...books]
+    updatedBooks[index].read = !updatedBooks[index].read
+    setBooks(updatedBooks)
+    localStorage.setItem('books', JSON.stringify(updatedBooks))
+  }
+
+  function removeBook(index: number) {
+    const updatedBooks = [...books]
+    updatedBooks.splice(index, 1)
+    setBooks(updatedBooks)
+    localStorage.setItem('books', JSON.stringify(updatedBooks))
+  }
+
   return (
     <>
       <Header />
