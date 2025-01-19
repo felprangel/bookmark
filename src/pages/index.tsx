@@ -9,6 +9,7 @@ export default function Index() {
         <Button>+ Adicionar Livro</Button>
       </ButtonContainer>
       <CardsContainer></CardsContainer>
+      <BookModal open={modalOpen} onClose={() => setModalOpen(false)} />
     </>
   )
 }
