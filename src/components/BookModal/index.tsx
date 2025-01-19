@@ -33,4 +33,5 @@ const StyledForm = styled.form`
 const CheckboxContainer = styled.div`
   display: flex;
   justify-content: center;
+  align-items: center;
 `
