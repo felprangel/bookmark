@@ -18,7 +18,7 @@ export function BookModal(props: ModalProps) {
           <h2>Lido?</h2>
           <Checkbox name="status" />
         </CheckboxContainer>
-        <button>Pronto!</button>
+        <Button>Pronto!</Button>
       </StyledForm>
     </Dialog>
   )
@@ -46,4 +46,19 @@ const CheckboxContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`
+
+const Button = styled.button`
+  border: 0;
+  padding: 0.5em 1em;
+  width: 100%;
+  border-radius: 0.7em;
+  font-size: 1.3em;
+  font-weight: 600;
+  outline: none;
+  transition: 150ms linear;
+
+  &:hover {
+    background-color: #d9d7da;
+  }
 `
