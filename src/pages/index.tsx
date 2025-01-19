@@ -36,13 +36,15 @@ export default function Index() {
         <Button onClick={() => setModalOpen(true)}>+ Adicionar Livro</Button>
       </ButtonContainer>
       <CardsContainer>
-        {books.map(book => (
+        {books.map((book, index) => (
           <BookCard
             key={`${book.title}_${book.pages}`}
             title={book.title}
             author={book.author}
             pages={book.pages}
             read={book.read}
+            handleRead={() => handleRead(index)}
+            removeBook={() => removeBook(index)}
           />
         ))}
       </CardsContainer>
