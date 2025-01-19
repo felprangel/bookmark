@@ -6,9 +6,15 @@ import styled from 'styled-components'
 
 export default function Index() {
   useEffect(() => {
-    const books = localStorage.getItem('books')
-    if (books) {
-      setBooks(JSON.parse(books))
+    function syncBooks() {
+      const books = localStorage.getItem('books')
+      setBooks(books ? JSON.parse(books) : [])
+    }
+    window.addEventListener('storage', syncBooks)
+    syncBooks()
+
+    return () => {
+      window.removeEventListener('storage', syncBooks)
     }
   }, [])
 
