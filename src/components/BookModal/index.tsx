@@ -6,7 +6,7 @@ interface ModalProps {
   onClose: () => void
 }
 
-interface BookProps {
+export interface BookProps {
   title: string
   author: string
   pages: number
