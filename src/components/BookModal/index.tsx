@@ -1,4 +1,5 @@
 import { Dialog } from '@mui/material'
+import styled from 'styled-components'
 
 interface ModalProps {
   open: boolean
@@ -8,7 +9,7 @@ interface ModalProps {
 export function BookModal(props: ModalProps) {
   return (
     <Dialog open={props.open} onClose={props.onClose}>
-      <form>
+      <StyledForm>
         <h1>Adicionar Livro</h1>
         <input type="text" name="title" placeholder="Título" maxLength={100} required />
         <input type="text" name="author" placeholder="Autor" maxLength={100} required />
@@ -18,7 +19,13 @@ export function BookModal(props: ModalProps) {
           <input type="checkbox" name="status" />
         </div>
         <button>Pronto!</button>
-      </form>
+      </StyledForm>
     </Dialog>
   )
 }
+
+const StyledForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
