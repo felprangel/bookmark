@@ -1,4 +1,4 @@
-import { Dialog } from '@mui/material'
+import { Checkbox, Dialog } from '@mui/material'
 import styled from 'styled-components'
 
 interface ModalProps {
@@ -16,7 +16,7 @@ export function BookModal(props: ModalProps) {
         <input type="number" name="pages" placeholder="Páginas" min={0} max={10000} required />
         <CheckboxContainer>
           <h2>Lido?</h2>
-          <input type="checkbox" name="status" />
+          <Checkbox name="status" />
         </CheckboxContainer>
         <button>Pronto!</button>
       </StyledForm>
