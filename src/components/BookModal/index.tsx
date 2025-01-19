@@ -17,7 +17,7 @@ export function BookModal(props: ModalProps) {
           <h2>Lido?</h2>
           <input type="checkbox" name="status" />
         </div>
-        <button id="done">Pronto!</button>
+        <button>Pronto!</button>
       </form>
     </Dialog>
   )
