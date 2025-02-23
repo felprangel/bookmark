@@ -1,9 +1,13 @@
 import styled from 'styled-components'
 
-export function Header() {
+interface HeaderProps {
+  title?: string
+}
+
+export function Header(props: HeaderProps) {
   return (
     <StyledHeader>
-      <Heading>Bookmark</Heading>
+      <Heading>{props.title ?? 'Bookmark'}</Heading>
     </StyledHeader>
   )
 }
