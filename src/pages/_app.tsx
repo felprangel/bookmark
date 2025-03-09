@@ -1,3 +1,4 @@
+import { AuthProvider } from '@/hooks/useAuth'
 import { GlobalStyle } from '@/styles/globals'
 import '@/styles/globals.ts'
 import type { AppProps } from 'next/app'
@@ -9,7 +10,9 @@ export default function App({ Component, pageProps }: AppProps) {
       <Head>
         <title>Bookmark</title>
       </Head>
-      <Component {...pageProps} />
+      <AuthProvider>
+        <Component {...pageProps} />
+      </AuthProvider>
       <GlobalStyle />
     </>
   )
