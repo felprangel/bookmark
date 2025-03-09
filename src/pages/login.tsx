@@ -1,14 +1,45 @@
 import { Header } from '@/components/Header'
+import { useFormik } from 'formik'
 import styled from 'styled-components'
 
+interface FormData {
+  email: string
+  password: string
+}
+
 export default function Login() {
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: ''
+    },
+    onSubmit: handleSubmit
+  })
+
+  function handleSubmit(data: FormData) {}
   return (
     <>
       <Header title="Login" />
-      <StyledForm onSubmit={login}>
+      <StyledForm onSubmit={formik.handleSubmit}>
         <h1>Adicionar Livro</h1>
-        <StyledInput type="email" name="email" placeholder="Email" required />
-        <StyledInput type="password" name="password" placeholder="Senha" required />
+        <StyledInput
+          type="email"
+          name="email"
+          placeholder="Email"
+          required
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.email}
+        />
+        <StyledInput
+          type="password"
+          name="password"
+          placeholder="Senha"
+          required
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.password}
+        />
         <Button>Pronto!</Button>
       </StyledForm>
     </>
