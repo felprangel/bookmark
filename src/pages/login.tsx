@@ -7,6 +7,10 @@ interface FormData {
   password: string
 }
 
+interface LoginResponse {
+  token: string
+}
+
 export default function Login() {
   const formik = useFormik({
     initialValues: {
