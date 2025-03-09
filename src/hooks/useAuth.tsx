@@ -1,16 +1,43 @@
+import { api } from '@/services/api'
 import { createContext, ReactNode, useContext } from 'react'
+import Cookie from 'js-cookie'
+import { useRouter } from 'next/router'
 
 interface AuthProps {
-  register(): void
-  login(): void
+  register(data: RegisterData): Promise<void>
+  login(data: LoginData): Promise<void>
+}
+
+interface RegisterData {
+  name: string
+  email: string
+  password: string
+  password_confirmation: string
+}
+
+interface LoginData {
+  email: string
+  password: string
+}
+
+interface AuthResponse {
+  token: string
 }
 
 const AuthContext = createContext({} as AuthProps)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  function register() {}
+  const Router = useRouter()
 
-  function login() {}
+  async function register(data: RegisterData): Promise<void> {
+    const response = await api.post<AuthResponse>('/register', data)
+    const token = response.data.token.split('|')[1]
+
+    Cookie.set('token', token)
+    Router.replace('/')
+  }
+
+  function login(data: LoginData): Promise<void> {}
 
   return (
     <AuthContext.Provider
