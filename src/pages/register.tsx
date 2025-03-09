@@ -1,23 +1,10 @@
 import { Header } from '@/components/Header'
-import { api } from '@/services/api'
+import { RegisterData, useAuth } from '@/hooks/useAuth'
 import { useFormik } from 'formik'
-import Cookie from 'js-cookie'
-import { useRouter } from 'next/router'
 import styled from 'styled-components'
 
-interface FormData {
-  name: string
-  email: string
-  password: string
-  password_confirmation: string
-}
-
-interface RegisterResponse {
-  token: string
-}
-
 export default function Register() {
-  const Router = useRouter()
+  const Auth = useAuth()
 
   const formik = useFormik({
     initialValues: {
@@ -29,11 +16,8 @@ export default function Register() {
     onSubmit: handleSubmit
   })
 
-  async function handleSubmit(data: FormData) {
-    const response = await api.post<RegisterResponse>('/register', data)
-    const token = response.data.token.split('|')[1]
-    Cookie.set('token', token)
-    Router.replace('/')
+  async function handleSubmit(data: RegisterData) {
+    Auth.register(data)
   }
 
   return (
