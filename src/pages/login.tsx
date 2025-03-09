@@ -1,5 +1,8 @@
 import { Header } from '@/components/Header'
+import { api } from '@/services/api'
 import { useFormik } from 'formik'
+import Cookie from 'js-cookie'
+import { useRouter } from 'next/router'
 import styled from 'styled-components'
 
 interface FormData {
@@ -12,6 +15,7 @@ interface LoginResponse {
 }
 
 export default function Login() {
+  const Router = useRouter()
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -20,7 +24,12 @@ export default function Login() {
     onSubmit: handleSubmit
   })
 
-  function handleSubmit(data: FormData) {}
+  async function handleSubmit(data: FormData) {
+    const response = await api.post<LoginResponse>('/login', data)
+    const token = response.data.token.split('|')[1]
+    Cookie.set('token', token)
+    Router.replace('/')
+  }
   return (
     <>
       <Header title="Login" />
