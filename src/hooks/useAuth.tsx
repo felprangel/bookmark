@@ -37,7 +37,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     Router.replace('/')
   }
 
-  function login(data: LoginData): Promise<void> {}
+  async function login(data: LoginData): Promise<void> {
+    const response = await api.post<AuthResponse>('/login', data)
+    const token = response.data.token.split('|')[1]
+
+    Cookie.set('token', token)
+    Router.replace('/')
+  }
 
   return (
     <AuthContext.Provider
