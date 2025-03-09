@@ -16,6 +16,7 @@ interface LoginResponse {
 
 export default function Login() {
   const Router = useRouter()
+
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -30,6 +31,7 @@ export default function Login() {
     Cookie.set('token', token)
     Router.replace('/')
   }
+
   return (
     <>
       <Header title="Login" />
