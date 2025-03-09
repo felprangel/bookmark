@@ -8,14 +8,14 @@ interface AuthProps {
   login(data: LoginData): Promise<void>
 }
 
-interface RegisterData {
+export interface RegisterData {
   name: string
   email: string
   password: string
   password_confirmation: string
 }
 
-interface LoginData {
+export interface LoginData {
   email: string
   password: string
 }
