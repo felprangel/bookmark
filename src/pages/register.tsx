@@ -30,7 +30,7 @@ export default function Register() {
   })
 
   async function handleSubmit(data: FormData) {
-    const response = await api.post<RegisterResponse>('/login', data)
+    const response = await api.post<RegisterResponse>('/register', data)
     const token = response.data.token.split('|')[1]
     Cookie.set('token', token)
     Router.replace('/')
