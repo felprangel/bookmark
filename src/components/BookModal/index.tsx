@@ -1,4 +1,5 @@
 import { Checkbox, Dialog } from '@mui/material'
+import { useFormik } from 'formik'
 import styled from 'styled-components'
 
 interface ModalProps {
@@ -14,34 +15,60 @@ export interface BookProps {
 }
 
 export function BookModal(props: ModalProps) {
-  function handleSubmit(event: React.FormEvent) {
-    event.preventDefault()
-    const form = event.target as HTMLFormElement
-    const formData = new FormData(form)
-    const book: BookProps = {
-      title: formData.get('title') as string,
-      author: formData.get('author') as string,
-      pages: Number(formData.get('pages')),
-      read: !!formData.get('status')
-    }
+  const formik = useFormik({
+    initialValues: {
+      title: '',
+      author: '',
+      pages: 0,
+      read: false
+    },
+    onSubmit: handleSubmit
+  })
 
-    const books = localStorage.getItem('books')
-    const parsedBooks: BookProps[] = books ? JSON.parse(books) : []
-    localStorage.setItem('books', JSON.stringify([...parsedBooks, book]))
+  function handleSubmit(data: BookProps) {
+    console.log(data)
     window.dispatchEvent(new Event('storage'))
     props.onClose()
   }
 
   return (
     <Dialog open={props.open} onClose={props.onClose}>
-      <StyledForm onSubmit={handleSubmit}>
+      <StyledForm onSubmit={formik.handleSubmit}>
         <h1>Adicionar Livro</h1>
-        <StyledInput type="text" name="title" placeholder="Título" maxLength={100} required />
-        <StyledInput type="text" name="author" placeholder="Autor" maxLength={100} required />
-        <StyledInput type="number" name="pages" placeholder="Páginas" min={0} max={10000} required />
+        <StyledInput
+          type="text"
+          name="title"
+          placeholder="Título"
+          maxLength={100}
+          required
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.title}
+        />
+        <StyledInput
+          type="text"
+          name="author"
+          placeholder="Autor"
+          maxLength={100}
+          required
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.author}
+        />
+        <StyledInput
+          type="number"
+          name="pages"
+          placeholder="Páginas"
+          min={0}
+          max={10000}
+          required
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values.pages}
+        />
         <CheckboxContainer>
           <h2>Lido?</h2>
-          <Checkbox name="status" />
+          <Checkbox name="read" onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.read} />
         </CheckboxContainer>
         <Button>Pronto!</Button>
       </StyledForm>
