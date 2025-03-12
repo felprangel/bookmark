@@ -1,6 +1,7 @@
 import { Header } from '@/components/Header'
 import { LoginData, useAuth } from '@/hooks/useAuth'
 import { useFormik } from 'formik'
+import Link from 'next/link'
 import styled from 'styled-components'
 import { z } from 'zod'
 
@@ -47,6 +48,7 @@ export default function Login() {
           value={formik.values.password}
         />
         <Button>Pronto!</Button>
+        <Link href={'/register'}>Não tem uma conta? Registre-se</Link>
       </StyledForm>
     </>
   )
@@ -72,7 +74,7 @@ const StyledInput = styled.input`
 `
 
 const Button = styled.button`
-  margin-top: 0.5rem;
+  margin: 0.5rem 0;
   border: 0;
   padding: 0.5em 1em;
   width: 100%;
