@@ -24,7 +24,6 @@ export default function Register() {
     <>
       <Header title="Registro" />
       <StyledForm onSubmit={formik.handleSubmit}>
-        <h1>Adicionar Livro</h1>
         <StyledInput
           type="text"
           name="name"
