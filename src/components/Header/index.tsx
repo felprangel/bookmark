@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import styled from 'styled-components'
 
 interface HeaderProps {
@@ -5,9 +6,10 @@ interface HeaderProps {
 }
 
 export function Header(props: HeaderProps) {
+  const Route = useRouter()
   return (
     <StyledHeader>
-      <Heading>{props.title ?? 'Bookmark'}</Heading>
+      <Heading onClick={() => Route.push('/')}>{props.title ?? 'Bookmark'}</Heading>
     </StyledHeader>
   )
 }
