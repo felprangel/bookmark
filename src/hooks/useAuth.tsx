@@ -3,10 +3,12 @@ import { createContext, ReactNode, useContext } from 'react'
 import Cookie from 'js-cookie'
 import { useRouter } from 'next/router'
 import { COOKIE_TOKEN } from '@/database/local'
+import useSWR from 'swr'
 
 interface AuthProps {
   register(data: RegisterData): Promise<void>
   login(data: LoginData): Promise<void>
+  loggedIn: boolean
 }
 
 export interface LoginData {
@@ -28,6 +30,30 @@ const AuthContext = createContext({} as AuthProps)
 export function AuthProvider({ children }: { children: ReactNode }) {
   const Router = useRouter()
 
+  const { data } = useSWR('token', fetchUserData, {
+    refreshInterval: 500,
+    revalidateOnFocus: true,
+    revalidateOnMount: true,
+    fallbackData: false
+  })
+
+  function fetchUserData(): boolean | void {
+    const token = Cookie?.get(COOKIE_TOKEN)
+
+    if (token) {
+      return true
+    }
+
+    if (Router.pathname.match(/(login|register)$/)) return
+
+    logout()
+  }
+
+  function logout() {
+    Cookie.remove(COOKIE_TOKEN)
+    Router.push('/login')
+  }
+
   async function register(data: RegisterData): Promise<void> {
     const response = await api.post<AuthResponse>('/register', data)
     const token = response.data.token.split('|')[1]
@@ -48,7 +74,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     <AuthContext.Provider
       value={{
         register,
-        login
+        login,
+        loggedIn: !!data
       }}
     >
       {children}
