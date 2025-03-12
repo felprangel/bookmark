@@ -1,6 +1,7 @@
 import { Checkbox, Dialog } from '@mui/material'
 import { useFormik } from 'formik'
 import styled from 'styled-components'
+import { z } from 'zod'
 
 interface ModalProps {
   open: boolean
@@ -26,7 +27,13 @@ export function BookModal(props: ModalProps) {
   })
 
   function handleSubmit(data: BookProps) {
-    console.log(data)
+    z.object({
+      title: z.string().nonempty('O título é obrigatório'),
+      author: z.string().nonempty('O autor é obrigatório'),
+      pages: z.number().min(0, 'O número de paǵinas deve ser maior do que 0'),
+      read: z.boolean()
+    }).parse(data)
+
     window.dispatchEvent(new Event('storage'))
     props.onClose()
   }
