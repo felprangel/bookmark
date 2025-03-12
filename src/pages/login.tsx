@@ -2,6 +2,7 @@ import { Header } from '@/components/Header'
 import { LoginData, useAuth } from '@/hooks/useAuth'
 import { useFormik } from 'formik'
 import styled from 'styled-components'
+import { z } from 'zod'
 
 export default function Login() {
   const Auth = useAuth()
@@ -15,6 +16,11 @@ export default function Login() {
   })
 
   async function handleSubmit(data: LoginData) {
+    z.object({
+      email: z.string().nonempty('O email é obrigatório'),
+      password: z.string().nonempty('A senha é obrigatória')
+    }).parse(data)
+
     Auth.login(data)
   }
 
