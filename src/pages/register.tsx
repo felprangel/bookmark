@@ -2,6 +2,7 @@ import { Header } from '@/components/Header'
 import { RegisterData, useAuth } from '@/hooks/useAuth'
 import { useFormik } from 'formik'
 import styled from 'styled-components'
+import { z } from 'zod'
 
 export default function Register() {
   const Auth = useAuth()
@@ -17,6 +18,13 @@ export default function Register() {
   })
 
   async function handleSubmit(data: RegisterData) {
+    z.object({
+      name: z.string().nonempty('O nome é obrigatório'),
+      email: z.string().nonempty('O email é obrigatório'),
+      password: z.string().nonempty('A senha é obrigatório'),
+      password_confirmation: z.string().nonempty('A confirmação de senha é obrigatória')
+    }).parse(data)
+
     Auth.register(data)
   }
 
