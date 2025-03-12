@@ -27,4 +27,5 @@ const StyledHeader = styled.header`
 const Heading = styled.h1`
   font-size: 2.5em;
   font-weight: 700;
+  cursor: pointer;
 `
