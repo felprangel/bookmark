@@ -2,6 +2,7 @@ import { api } from '@/services/api'
 import { createContext, ReactNode, useContext } from 'react'
 import Cookie from 'js-cookie'
 import { useRouter } from 'next/router'
+import { COOKIE_TOKEN } from '@/database/local'
 
 interface AuthProps {
   register(data: RegisterData): Promise<void>
@@ -31,7 +32,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const response = await api.post<AuthResponse>('/register', data)
     const token = response.data.token.split('|')[1]
 
-    Cookie.set('token', token)
+    Cookie.set(COOKIE_TOKEN, token)
     Router.replace('/')
   }
 
@@ -39,7 +40,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const response = await api.post<AuthResponse>('/login', data)
     const token = response.data.token.split('|')[1]
 
-    Cookie.set('token', token)
+    Cookie.set(COOKIE_TOKEN, token)
     Router.replace('/')
   }
 
