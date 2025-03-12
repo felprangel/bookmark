@@ -75,7 +75,7 @@ const StyledForm = styled.form`
 
 const StyledInput = styled.input`
   border: none;
-  background-color: #f0eef1;
+  background-color: var(--white);
   padding: 1.3em;
   margin: 0.5em 0;
   border-radius: 0.4em;
@@ -86,6 +86,7 @@ const StyledInput = styled.input`
 `
 
 const Button = styled.button`
+  margin-top: 0.5rem;
   border: 0;
   padding: 0.5em 1em;
   width: 100%;
@@ -94,8 +95,10 @@ const Button = styled.button`
   font-weight: 600;
   outline: none;
   transition: 150ms linear;
+  max-width: 30%;
+  background-color: #d9d7da;
 
   &:hover {
-    background-color: #d9d7da;
+    background-color: var(--gray);
   }
 `
