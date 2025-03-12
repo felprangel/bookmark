@@ -22,7 +22,6 @@ export default function Login() {
     <>
       <Header title="Login" />
       <StyledForm onSubmit={formik.handleSubmit}>
-        <h1>Adicionar Livro</h1>
         <StyledInput
           type="email"
           name="email"
