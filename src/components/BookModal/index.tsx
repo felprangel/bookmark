@@ -1,3 +1,4 @@
+import { api } from '@/services/api'
 import { Checkbox, Dialog } from '@mui/material'
 import { useFormik } from 'formik'
 import styled from 'styled-components'
@@ -26,13 +27,15 @@ export function BookModal(props: ModalProps) {
     onSubmit: handleSubmit
   })
 
-  function handleSubmit(data: BookProps) {
+  async function handleSubmit(data: BookProps) {
     z.object({
       title: z.string().nonempty('O título é obrigatório'),
       author: z.string().nonempty('O autor é obrigatório'),
       pages: z.number().min(0, 'O número de paǵinas deve ser maior do que 0'),
       read: z.boolean()
     }).parse(data)
+
+    await api.post('/book', data)
 
     window.dispatchEvent(new Event('storage'))
     props.onClose()
