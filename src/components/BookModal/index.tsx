@@ -17,6 +17,8 @@ export interface BookProps {
   read: boolean
 }
 
+type BookForm = Omit<BookProps, 'id'>
+
 export function BookModal(props: ModalProps) {
   const formik = useFormik({
     initialValues: {
