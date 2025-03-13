@@ -8,6 +8,7 @@ import useSWR from 'swr'
 interface AuthProps {
   register(data: RegisterData): Promise<void>
   login(data: LoginData): Promise<void>
+  logout(): void
   loggedIn: boolean
 }
 
@@ -75,6 +76,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       value={{
         register,
         login,
+        logout,
         loggedIn: !!data
       }}
     >
