@@ -1,15 +1,17 @@
 import { BookCard } from '@/components/BookCard'
 import { BookModal, BookProps } from '@/components/BookModal'
 import { Header } from '@/components/Header'
+import { api } from '@/services/api'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 export default function Index() {
   useEffect(() => {
-    function syncBooks() {
-      const books = localStorage.getItem('books')
-      setBooks(books ? JSON.parse(books) : [])
+    async function syncBooks() {
+      const books = await api.get<BookProps[]>('/book')
+      setBooks(books.data)
     }
+
     window.addEventListener('storage', syncBooks)
     syncBooks()
 
@@ -21,18 +23,14 @@ export default function Index() {
   const [modalOpen, setModalOpen] = useState<boolean>(false)
   const [books, setBooks] = useState<BookProps[]>([])
 
-  function handleRead(index: number) {
-    const updatedBooks = [...books]
-    updatedBooks[index].read = !updatedBooks[index].read
-    setBooks(updatedBooks)
-    localStorage.setItem('books', JSON.stringify(updatedBooks))
+  async function handleRead(id: number, read: boolean) {
+    await api.patch(`/book/${id}/read`, { read: !read })
+    window.dispatchEvent(new Event('storage'))
   }
 
-  function removeBook(index: number) {
-    const updatedBooks = [...books]
-    updatedBooks.splice(index, 1)
-    setBooks(updatedBooks)
-    localStorage.setItem('books', JSON.stringify(updatedBooks))
+  async function removeBook(id: number) {
+    await api.delete(`/book/${id}`)
+    window.dispatchEvent(new Event('storage'))
   }
 
   return (
@@ -42,15 +40,15 @@ export default function Index() {
         <Button onClick={() => setModalOpen(true)}>+ Adicionar Livro</Button>
       </ButtonContainer>
       <CardsContainer>
-        {books.map((book, index) => (
+        {books.map(book => (
           <BookCard
-            key={`${book.title}_${book.pages}`}
+            key={book.id}
             title={book.title}
             author={book.author}
             pages={book.pages}
             read={book.read}
-            handleRead={() => handleRead(index)}
-            removeBook={() => removeBook(index)}
+            handleRead={() => handleRead(book.id, book.read)}
+            removeBook={() => removeBook(book.id)}
           />
         ))}
       </CardsContainer>
