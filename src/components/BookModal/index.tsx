@@ -38,7 +38,7 @@ export function BookModal(props: ModalProps) {
       read: z.boolean()
     }).parse(data)
 
-    await api.post('/book', data)
+    await api.post('/books', data)
 
     window.dispatchEvent(new Event('storage'))
     props.onClose()
