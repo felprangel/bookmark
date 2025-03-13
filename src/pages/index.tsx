@@ -8,7 +8,7 @@ import styled from 'styled-components'
 export default function Index() {
   useEffect(() => {
     async function syncBooks() {
-      const books = await api.get<BookProps[]>('/book')
+      const books = await api.get<BookProps[]>('/books')
       setBooks(books.data)
     }
 
@@ -24,12 +24,12 @@ export default function Index() {
   const [books, setBooks] = useState<BookProps[]>([])
 
   async function handleRead(id: number, read: boolean) {
-    await api.patch(`/book/${id}/read`, { read: !read })
+    await api.patch(`/books/${id}/read`, { read: !read })
     window.dispatchEvent(new Event('storage'))
   }
 
   async function removeBook(id: number) {
-    await api.delete(`/book/${id}`)
+    await api.delete(`/books/${id}`)
     window.dispatchEvent(new Event('storage'))
   }
 
