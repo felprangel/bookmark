@@ -10,6 +10,7 @@ interface ModalProps {
 }
 
 export interface BookProps {
+  id: number
   title: string
   author: string
   pages: number
