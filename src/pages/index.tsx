@@ -35,7 +35,7 @@ export default function Index() {
 
   return (
     <>
-      <Header />
+      <Header showRightSide />
       <ButtonContainer>
         <Button onClick={() => setModalOpen(true)}>+ Adicionar Livro</Button>
       </ButtonContainer>
