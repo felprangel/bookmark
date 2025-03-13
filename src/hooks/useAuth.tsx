@@ -50,7 +50,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     logout()
   }
 
-  function logout() {
+  async function logout() {
+    await api.post('/logout')
     Cookie.remove(COOKIE_TOKEN)
     Router.push('/login')
   }
