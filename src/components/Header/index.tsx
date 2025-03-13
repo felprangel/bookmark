@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 import styled from 'styled-components'
 import { MenuBlock } from './components/MenuBlock'
+import { useAuth } from '@/hooks/useAuth'
 
 interface HeaderProps {
   title?: string
@@ -8,10 +9,12 @@ interface HeaderProps {
 
 export function Header(props: HeaderProps) {
   const Route = useRouter()
+  const Auth = useAuth()
+
   return (
     <StyledHeader>
       <Heading onClick={() => Route.push('/')}>{props.title ?? 'Bookmark'}</Heading>
-      <MenuBlock />
+      {Auth.loggedIn && <MenuBlock />}
     </StyledHeader>
   )
 }
