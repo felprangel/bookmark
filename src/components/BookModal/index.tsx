@@ -30,7 +30,7 @@ export function BookModal(props: ModalProps) {
     onSubmit: handleSubmit
   })
 
-  async function handleSubmit(data: BookProps) {
+  async function handleSubmit(data: BookForm) {
     z.object({
       title: z.string().nonempty('O título é obrigatório'),
       author: z.string().nonempty('O autor é obrigatório'),
