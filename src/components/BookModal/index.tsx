@@ -25,8 +25,8 @@ export function BookModal(props: ModalProps) {
     title: z.string({ required_error: 'O título é obrigatório' }),
     author: z.string({ required_error: 'O autor é obrigatório' }),
     pages: z
-      .number()
-      .min(0, 'O número de paǵinas deve ser maior do que 0')
+      .number({ required_error: 'O número de páginas é obrigatório' })
+      .min(1, 'O número de paǵinas deve ser maior do que 0')
       .max(10000, 'O número de páginas deve ser maior do que 10000'),
     read: z.boolean()
   })
