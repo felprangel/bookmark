@@ -4,9 +4,17 @@ import { useFormik } from 'formik'
 import Link from 'next/link'
 import styled from 'styled-components'
 import { z } from 'zod'
+import { toFormikValidationSchema } from 'zod-formik-adapter'
 
 export default function Register() {
   const Auth = useAuth()
+
+  const registerSchema = z.object({
+    name: z.string({ required_error: 'O nome é obrigatório' }),
+    email: z.string({ required_error: 'O email é obrigatório' }).email('Email inválido'),
+    password: z.string({ required_error: 'A senha é obrigatória' }),
+    password_confirmation: z.string({ required_error: 'A confirmação de senha é obrigatória' })
+  })
 
   const formik = useFormik({
     initialValues: {
@@ -15,17 +23,12 @@ export default function Register() {
       password: '',
       password_confirmation: ''
     },
-    onSubmit: handleSubmit
+    validationSchema: toFormikValidationSchema(registerSchema),
+    onSubmit: handleSubmit,
+    validateOnBlur: true
   })
 
   async function handleSubmit(data: RegisterData) {
-    z.object({
-      name: z.string().nonempty('O nome é obrigatório'),
-      email: z.string().nonempty('O email é obrigatório'),
-      password: z.string().nonempty('A senha é obrigatório'),
-      password_confirmation: z.string().nonempty('A confirmação de senha é obrigatória')
-    }).parse(data)
-
     Auth.register(data)
   }
 
@@ -33,43 +36,53 @@ export default function Register() {
     <>
       <Header title="Registro" />
       <StyledForm onSubmit={formik.handleSubmit}>
-        <StyledInput
-          type="text"
-          name="name"
-          placeholder="Nome"
-          required
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.name}
-        />
-        <StyledInput
-          type="email"
-          name="email"
-          placeholder="Email"
-          required
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.email}
-        />
-        <StyledInput
-          type="password"
-          name="password"
-          placeholder="Senha"
-          required
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.password}
-        />
-        <StyledInput
-          type="password"
-          name="password_confirmation"
-          placeholder="Confirme sua Senha"
-          required
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.password_confirmation}
-        />
-        <Button>Pronto!</Button>
+        <InputContainer>
+          <StyledInput
+            type="text"
+            name="name"
+            placeholder="Nome"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.name}
+          />
+          {formik.touched.name && formik.errors.name && <ErrorMessage>{formik.errors.name}</ErrorMessage>}
+        </InputContainer>
+        <InputContainer>
+          <StyledInput
+            type="email"
+            name="email"
+            placeholder="Email"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.email}
+          />
+          {formik.touched.email && formik.errors.email && <ErrorMessage>{formik.errors.email}</ErrorMessage>}
+        </InputContainer>
+        <InputContainer>
+          <StyledInput
+            type="password"
+            name="password"
+            placeholder="Senha"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.password}
+          />
+          {formik.touched.password && formik.errors.password && <ErrorMessage>{formik.errors.password}</ErrorMessage>}
+        </InputContainer>
+        <InputContainer>
+          <StyledInput
+            type="password"
+            name="password_confirmation"
+            placeholder="Confirme sua Senha"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.password_confirmation}
+          />
+          {formik.touched.password_confirmation && formik.errors.password_confirmation && (
+            <ErrorMessage>{formik.errors.password_confirmation}</ErrorMessage>
+          )}
+        </InputContainer>
+        <Button type="submit">Pronto!</Button>
         <Link href={'/login'}>Já tem uma conta? Faça login</Link>
       </StyledForm>
     </>
@@ -83,16 +96,30 @@ const StyledForm = styled.form`
   margin: 2em;
 `
 
+const InputContainer = styled.div`
+  width: 100%;
+  max-width: 23em;
+  margin: 0.5em 0;
+  display: flex;
+  flex-direction: column;
+`
+
 const StyledInput = styled.input`
   border: none;
   background-color: var(--white);
   padding: 1.3em;
-  margin: 0.5em 0;
   border-radius: 0.4em;
-  width: 23em;
+  width: 100%;
   font-size: 1em;
   font-weight: 700;
   outline: none;
+`
+
+const ErrorMessage = styled.span`
+  color: #ff3333;
+  font-size: 0.8em;
+  margin-top: 0.3em;
+  align-self: flex-start;
 `
 
 const Button = styled.button`
