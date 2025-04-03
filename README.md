@@ -9,7 +9,7 @@
 - **Adicionar livros**: Informe o título, autor e o número de páginas.
 - **Gerenciar leituras**: Marque livros como "lido" ou "não lido".
 - **Visualizar catálogo**: Veja todos os livros cadastrados.
-- **Persistência de dados**: Os livros são salvos no `localStorage` para manter as informações mesmo ao recarregar a página.
+- **Persistência de dados**: Os livros são salvos no banco de dados através da api.
 
 ---
 
@@ -24,17 +24,16 @@
 - **React.js**: Biblioteca para criar interfaces de usuário.
 - **Next.js**: Framework React com suporte para server-side rendering (SSR) e rotas dinâmicas.
 - **Styled Components**: Estilização rápida e moderna.
-- **LocalStorage**: Armazenamento local temporário dos dados.
-- (Em desenvolvimento) **Backend**: Uma API REST para persistência de dados em banco de dados.
+- **React Query**: Para páginação infinita da página inicial
+- **Backend**: Uma API REST para persistência de dados em banco de dados.
+- **Notificações Toast**: Mostrando feedback da ação do usuário.
 
 ---
 
 ## 🌟 Futuras Funcionalidades
 
-- [ ] **Integração com Backend**: Salvar e gerenciar livros através de uma API com banco de dados.
-- [ ] **Autenticação**: Criar contas de usuários para acessar o catálogo em qualquer dispositivo.
-- [ ] **Pesquisa e Filtros**: Procurar livros por nome ou autor e filtrar por status (lido/não lido).
-- [ ] **Modo escuro**: Experiência mais confortável para leitura em ambientes com pouca luz.
+- [x] **Integração com Backend**: Salvar e gerenciar livros através de uma API com banco de dados.
+- [x] **Autenticação**: Criar contas de usuários para acessar o catálogo em qualquer dispositivo.
 
 ---
 
