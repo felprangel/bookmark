@@ -5,6 +5,7 @@ import { api } from '@/services/api'
 import { useEffect, useState, useRef, useCallback } from 'react'
 import styled from 'styled-components'
 import { useInfiniteQuery } from '@tanstack/react-query'
+import toast from 'react-hot-toast'
 
 const ITEMS_PER_PAGE = 10
 
@@ -74,13 +75,23 @@ export default function Index() {
   }, [refetch])
 
   async function handleRead(id: number, read: boolean) {
-    await api.patch(`/books/${id}/read`, { read: !read })
-    window.dispatchEvent(new Event('storage'))
+    try {
+      await api.patch(`/books/${id}/read`, { read: !read })
+      window.dispatchEvent(new Event('storage'))
+      toast.success(!read ? 'Marked as read!' : 'Marked as unread.')
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'An unexpected error occurred')
+    }
   }
 
   async function removeBook(id: number) {
-    await api.delete(`/books/${id}`)
-    window.dispatchEvent(new Event('storage'))
+    try {
+      await api.delete(`/books/${id}`)
+      window.dispatchEvent(new Event('storage'))
+      toast.success('Book deleted!')
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'An unexpected error occurred')
+    }
   }
 
   const books = data?.pages.flatMap(page => page.books) || []
