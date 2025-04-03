@@ -1,19 +1,24 @@
 import { AuthProvider } from '@/hooks/useAuth'
 import { GlobalStyle } from '@/styles/globals'
 import '@/styles/globals.ts'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
+
+const queryClient = new QueryClient()
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
-      <Head>
-        <title>Bookmark</title>
-      </Head>
-      <AuthProvider>
-        <Component {...pageProps} />
-      </AuthProvider>
-      <GlobalStyle />
+      <QueryClientProvider client={queryClient}>
+        <Head>
+          <title>Bookmark</title>
+        </Head>
+        <AuthProvider>
+          <Component {...pageProps} />
+        </AuthProvider>
+        <GlobalStyle />
+      </QueryClientProvider>
     </>
   )
 }
