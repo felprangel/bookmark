@@ -3,7 +3,7 @@ import { createContext, ReactNode, useContext } from 'react'
 import Cookie from 'js-cookie'
 import { useRouter } from 'next/router'
 import { COOKIE_TOKEN } from '@/database/local'
-import useSWR from 'swr'
+import { useQuery } from '@tanstack/react-query'
 
 interface AuthProps {
   register(data: RegisterData): Promise<void>
@@ -31,11 +31,10 @@ const AuthContext = createContext({} as AuthProps)
 export function AuthProvider({ children }: { children: ReactNode }) {
   const Router = useRouter()
 
-  const { data } = useSWR('token', fetchUserData, {
-    refreshInterval: 500,
-    revalidateOnFocus: true,
-    revalidateOnMount: true,
-    fallbackData: false
+  const { data } = useQuery({
+    queryKey: ['token'],
+    queryFn: fetchUserData,
+    refetchInterval: 500
   })
 
   function fetchUserData(): boolean | void {
