@@ -2,26 +2,76 @@ import { BookCard } from '@/components/BookCard'
 import { BookModal, BookProps } from '@/components/BookModal'
 import { Header } from '@/components/Header'
 import { api } from '@/services/api'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react'
 import styled from 'styled-components'
+import { useInfiniteQuery } from '@tanstack/react-query'
+
+const ITEMS_PER_PAGE = 10
 
 export default function Index() {
+  const [modalOpen, setModalOpen] = useState<boolean>(false)
+  const observerRef = useRef<IntersectionObserver | null>(null)
+  const loadMoreRef = useRef<HTMLDivElement>(null)
+
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, refetch } = useInfiniteQuery({
+    queryKey: ['books'],
+    queryFn: async ({ pageParam = 1 }) => {
+      const response = await api.get<BookProps[]>('/books', {
+        params: {
+          page: pageParam
+        }
+      })
+
+      return {
+        books: response.data,
+        nextPage: response.data.length === ITEMS_PER_PAGE ? pageParam + 1 : undefined
+      }
+    },
+    initialPageParam: 1,
+    getNextPageParam: lastPage => lastPage.nextPage
+  })
+
+  const handleObserver = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      const [target] = entries
+      if (target.isIntersecting && hasNextPage && !isFetchingNextPage) {
+        fetchNextPage()
+      }
+    },
+    [fetchNextPage, hasNextPage, isFetchingNextPage]
+  )
+
   useEffect(() => {
-    async function syncBooks() {
-      const books = await api.get<BookProps[]>('/books')
-      setBooks(books.data)
+    const element = loadMoreRef.current
+
+    if (element) {
+      observerRef.current = new IntersectionObserver(handleObserver, {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+      })
+
+      observerRef.current.observe(element)
+    }
+
+    return () => {
+      if (observerRef.current && element) {
+        observerRef.current.unobserve(element)
+      }
+    }
+  }, [handleObserver])
+
+  useEffect(() => {
+    const syncBooks = () => {
+      refetch()
     }
 
     window.addEventListener('storage', syncBooks)
-    syncBooks()
 
     return () => {
       window.removeEventListener('storage', syncBooks)
     }
-  }, [])
-
-  const [modalOpen, setModalOpen] = useState<boolean>(false)
-  const [books, setBooks] = useState<BookProps[]>([])
+  }, [refetch])
 
   async function handleRead(id: number, read: boolean) {
     await api.patch(`/books/${id}/read`, { read: !read })
@@ -32,6 +82,8 @@ export default function Index() {
     await api.delete(`/books/${id}`)
     window.dispatchEvent(new Event('storage'))
   }
+
+  const books = data?.pages.flatMap(page => page.books) || []
 
   return (
     <>
@@ -51,6 +103,7 @@ export default function Index() {
             removeBook={() => removeBook(book.id)}
           />
         ))}
+        <LoadingIndicator ref={loadMoreRef}>{isFetchingNextPage && 'Carregando mais livros...'}</LoadingIndicator>
       </CardsContainer>
       <BookModal open={modalOpen} onClose={() => setModalOpen(false)} />
     </>
@@ -83,4 +136,12 @@ const CardsContainer = styled.div`
   grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
   padding: 0em 1em 2em 1em;
   gap: 40px;
+`
+
+const LoadingIndicator = styled.div`
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 1em;
+  font-size: 1.2em;
+  color: var(--dark-gray);
 `
