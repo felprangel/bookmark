@@ -1,6 +1,7 @@
 import { api } from '@/services/api'
 import { Checkbox, Dialog } from '@mui/material'
 import { useFormik } from 'formik'
+import toast from 'react-hot-toast'
 import styled from 'styled-components'
 import { z } from 'zod'
 import { toFormikValidationSchema } from 'zod-formik-adapter'
@@ -44,10 +45,15 @@ export function BookModal(props: ModalProps) {
   })
 
   async function handleSubmit(data: BookForm) {
-    await api.post('/books', data)
+    try {
+      await api.post('/books', data)
 
-    window.dispatchEvent(new Event('storage'))
-    props.onClose()
+      window.dispatchEvent(new Event('storage'))
+      props.onClose()
+      toast.success('Book added!')
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'An unexpected error occurred')
+    }
   }
 
   return (
