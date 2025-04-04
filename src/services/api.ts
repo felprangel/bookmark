@@ -24,6 +24,6 @@ api.interceptors.response.use(
       Cookie.remove(COOKIE_TOKEN)
       window.location.href = '/login'
     }
-    Promise.reject(error)
+    return Promise.reject(error)
   }
 )
