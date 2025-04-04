@@ -24,8 +24,9 @@
 - **React.js**: Biblioteca para criar interfaces de usuário.
 - **Next.js**: Framework React com suporte para server-side rendering (SSR) e rotas dinâmicas.
 - **Styled Components**: Estilização rápida e moderna.
-- **React Query**: Para páginação infinita da página inicial
-- **Backend**: Uma API REST para persistência de dados em banco de dados.
+- **Axios**: Para requisições de api.
+- **Formik**: Para lidar com formulários.
+- **React Query**: Para páginação infinita da página inicial.
 - **Notificações Toast**: Mostrando feedback da ação do usuário.
 
 ---
