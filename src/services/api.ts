@@ -2,7 +2,9 @@ import { COOKIE_TOKEN } from '@/database/local'
 import axios from 'axios'
 import Cookie from 'js-cookie'
 
-export const api = axios.create({ baseURL: process.env.NEXT_PUBLIC_API_URL })
+export const api = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_URL
+})
 
 api.interceptors.request.use(
   request => {
