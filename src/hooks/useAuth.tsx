@@ -4,6 +4,7 @@ import Cookie from 'js-cookie'
 import { useRouter } from 'next/router'
 import { COOKIE_TOKEN } from '@/database/local'
 import { useQuery } from '@tanstack/react-query'
+import toast from 'react-hot-toast'
 
 interface AuthProps {
   register(data: RegisterData): Promise<void>
@@ -37,38 +38,51 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     refetchInterval: 500
   })
 
-  function fetchUserData(): boolean | void {
+  function fetchUserData(): boolean | null {
     const token = Cookie?.get(COOKIE_TOKEN)
 
     if (token) {
       return true
     }
 
-    if (Router.pathname.match(/(login|register)$/)) return
+    if (Router.pathname.match(/(login|register|test)$/)) return null
 
     logout()
+    return null
   }
 
   async function logout() {
-    await api.post('/logout')
-    Cookie.remove(COOKIE_TOKEN)
-    Router.push('/login')
+    try {
+      await api.post('/logout')
+      Cookie.remove(COOKIE_TOKEN)
+      Router.push('/login')
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'An unexpected error occurred')
+    }
   }
 
   async function register(data: RegisterData): Promise<void> {
-    const response = await api.post<AuthResponse>('/register', data)
-    const token = response.data.token.split('|')[1]
+    try {
+      const response = await api.post<AuthResponse>('/register', data)
+      const token = response.data.token.split('|')[1]
 
-    Cookie.set(COOKIE_TOKEN, token)
-    Router.replace('/')
+      Cookie.set(COOKIE_TOKEN, token)
+      Router.replace('/')
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'An unexpected error occurred')
+    }
   }
 
   async function login(data: LoginData): Promise<void> {
-    const response = await api.post<AuthResponse>('/login', data)
-    const token = response.data.token.split('|')[1]
+    try {
+      const response = await api.post<AuthResponse>('/login', data)
+      const token = response.data.token.split('|')[1]
 
-    Cookie.set(COOKIE_TOKEN, token)
-    Router.replace('/')
+      Cookie.set(COOKIE_TOKEN, token)
+      Router.replace('/')
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'An unexpected error occurred')
+    }
   }
 
   return (
