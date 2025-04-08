@@ -62,22 +62,10 @@ export default function Index() {
     }
   }, [handleObserver])
 
-  useEffect(() => {
-    const syncBooks = () => {
-      refetch()
-    }
-
-    window.addEventListener('storage', syncBooks)
-
-    return () => {
-      window.removeEventListener('storage', syncBooks)
-    }
-  }, [refetch])
-
   async function handleRead(id: number, read: boolean) {
     try {
       await api.patch(`/books/${id}/read`, { read: !read })
-      window.dispatchEvent(new Event('storage'))
+      refetch()
       toast.success(!read ? 'Marked as read!' : 'Marked as unread.')
     } catch (error) {
       toast.error(error instanceof Error ? error.message : 'An unexpected error occurred')
@@ -87,7 +75,7 @@ export default function Index() {
   async function removeBook(id: number) {
     try {
       await api.delete(`/books/${id}`)
-      window.dispatchEvent(new Event('storage'))
+      refetch()
       toast.success('Book deleted!')
     } catch (error) {
       toast.error(error instanceof Error ? error.message : 'An unexpected error occurred')
@@ -116,7 +104,13 @@ export default function Index() {
         ))}
         <LoadingIndicator ref={loadMoreRef}>{isFetchingNextPage && 'Carregando mais livros...'}</LoadingIndicator>
       </CardsContainer>
-      <BookModal open={modalOpen} onClose={() => setModalOpen(false)} />
+      <BookModal
+        open={modalOpen}
+        onClose={() => {
+          refetch()
+          setModalOpen(false)
+        }}
+      />
     </>
   )
 }
