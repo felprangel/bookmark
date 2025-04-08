@@ -48,7 +48,6 @@ export function BookModal(props: ModalProps) {
     try {
       await api.post('/books', data)
 
-      window.dispatchEvent(new Event('storage'))
       props.onClose()
       toast.success('Book added!')
     } catch (error) {
