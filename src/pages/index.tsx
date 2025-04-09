@@ -7,6 +7,16 @@ import styled from 'styled-components'
 import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 
+interface BookPage {
+  books: BookProps[]
+  nextPage: number | undefined
+}
+
+interface InfiniteQueryData {
+  pages: BookPage[]
+  pageParams: (number | undefined)[]
+}
+
 const ITEMS_PER_PAGE = 10
 
 export default function Index() {
@@ -40,17 +50,17 @@ export default function Index() {
     onMutate: async ({ id, read }) => {
       await queryClient.cancelQueries({ queryKey: ['books'] })
 
-      const previousData = queryClient.getQueryData(['books'])
+      const previousData = queryClient.getQueryData<InfiniteQueryData>(['books'])
 
-      queryClient.setQueryData(['books'], (oldData: any) => {
+      queryClient.setQueryData<InfiniteQueryData>(['books'], oldData => {
         if (!oldData) return oldData
 
         return {
           ...oldData,
-          pages: oldData.pages.map((page: any) => {
+          pages: oldData.pages.map(page => {
             return {
               ...page,
-              books: page.books.map((book: BookProps) => (book.id === id ? { ...book, read: !read } : book))
+              books: page.books.map(book => (book.id === id ? { ...book, read: !read } : book))
             }
           })
         }
@@ -60,7 +70,7 @@ export default function Index() {
     },
     onError: (error, _variables, context) => {
       if (context?.previousData) {
-        queryClient.setQueryData(['books'], context.previousData)
+        queryClient.setQueryData<InfiniteQueryData>(['books'], context.previousData)
       }
       toast.error(error instanceof Error ? error.message : 'An unexpected error occurred')
     },
@@ -68,7 +78,6 @@ export default function Index() {
       toast.success(!variables.read ? 'Marked as read!' : 'Marked as unread.')
     },
     onSettled: () => {
-      // Corrigindo a key de invalidação
       queryClient.invalidateQueries({ queryKey: ['books'] })
     }
   })
