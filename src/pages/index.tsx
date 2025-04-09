@@ -4,12 +4,13 @@ import { Header } from '@/components/Header'
 import { api } from '@/services/api'
 import { useEffect, useState, useRef, useCallback } from 'react'
 import styled from 'styled-components'
-import { useInfiniteQuery } from '@tanstack/react-query'
+import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
 
 const ITEMS_PER_PAGE = 10
 
 export default function Index() {
+  const queryClient = useQueryClient()
   const observerRef = useRef<IntersectionObserver | null>(null)
   const loadMoreRef = useRef<HTMLDivElement>(null)
   const [modalOpen, setModalOpen] = useState<boolean>(false)
@@ -30,6 +31,46 @@ export default function Index() {
     },
     initialPageParam: 1,
     getNextPageParam: lastPage => lastPage.nextPage
+  })
+
+  const handleRead = useMutation({
+    mutationFn: ({ id, read }: { id: number; read: boolean }) => {
+      return api.patch(`/books/${id}/read`, { read: !read })
+    },
+    onMutate: async ({ id, read }) => {
+      await queryClient.cancelQueries({ queryKey: ['books'] })
+
+      const previousData = queryClient.getQueryData(['books'])
+
+      queryClient.setQueryData(['books'], (oldData: any) => {
+        if (!oldData) return oldData
+
+        return {
+          ...oldData,
+          pages: oldData.pages.map((page: any) => {
+            return {
+              ...page,
+              books: page.books.map((book: BookProps) => (book.id === id ? { ...book, read: !read } : book))
+            }
+          })
+        }
+      })
+
+      return { previousData }
+    },
+    onError: (error, _variables, context) => {
+      if (context?.previousData) {
+        queryClient.setQueryData(['books'], context.previousData)
+      }
+      toast.error(error instanceof Error ? error.message : 'An unexpected error occurred')
+    },
+    onSuccess: (_data, variables) => {
+      toast.success(!variables.read ? 'Marked as read!' : 'Marked as unread.')
+    },
+    onSettled: () => {
+      // Corrigindo a key de invalidação
+      queryClient.invalidateQueries({ queryKey: ['books'] })
+    }
   })
 
   const handleObserver = useCallback(
@@ -62,16 +103,6 @@ export default function Index() {
     }
   }, [handleObserver])
 
-  async function handleRead(id: number, read: boolean) {
-    try {
-      await api.patch(`/books/${id}/read`, { read: !read })
-      refetch()
-      toast.success(!read ? 'Marked as read!' : 'Marked as unread.')
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'An unexpected error occurred')
-    }
-  }
-
   async function removeBook(id: number) {
     try {
       await api.delete(`/books/${id}`)
@@ -98,7 +129,7 @@ export default function Index() {
             author={book.author}
             pages={book.pages}
             read={book.read}
-            handleRead={() => handleRead(book.id, book.read)}
+            handleRead={() => handleRead.mutate({ id: book.id, read: book.read })}
             removeBook={() => removeBook(book.id)}
           />
         ))}
