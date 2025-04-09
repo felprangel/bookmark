@@ -82,6 +82,45 @@ export default function Index() {
     }
   })
 
+  const deleteBooks = useMutation({
+    mutationFn: ({ id }: { id: number }) => {
+      return api.delete(`/books/${id}`)
+    },
+    onMutate: async ({ id }) => {
+      await queryClient.cancelQueries({ queryKey: ['books'] })
+
+      const previousData = queryClient.getQueryData<InfiniteQueryData>(['books'])
+
+      queryClient.setQueryData<InfiniteQueryData>(['books'], oldData => {
+        if (!oldData) return oldData
+
+        return {
+          ...oldData,
+          pages: oldData.pages.map(page => {
+            return {
+              ...page,
+              books: page.books.filter(book => book.id !== id)
+            }
+          })
+        }
+      })
+
+      return { previousData }
+    },
+    onError: (error, _variables, context) => {
+      if (context?.previousData) {
+        queryClient.setQueryData<InfiniteQueryData>(['books'], context.previousData)
+      }
+      toast.error(error instanceof Error ? error.message : 'An unexpected error occurred')
+    },
+    onSuccess: () => {
+      toast.success('Book deleted!')
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['books'] })
+    }
+  })
+
   const handleObserver = useCallback(
     (entries: IntersectionObserverEntry[]) => {
       const [target] = entries
@@ -112,16 +151,6 @@ export default function Index() {
     }
   }, [handleObserver])
 
-  async function removeBook(id: number) {
-    try {
-      await api.delete(`/books/${id}`)
-      refetch()
-      toast.success('Book deleted!')
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'An unexpected error occurred')
-    }
-  }
-
   const books = data?.pages.flatMap(page => page.books) || []
 
   return (
@@ -139,7 +168,7 @@ export default function Index() {
             pages={book.pages}
             read={book.read}
             handleRead={() => handleRead.mutate({ id: book.id, read: book.read })}
-            removeBook={() => removeBook(book.id)}
+            removeBook={() => deleteBooks.mutate({ id: book.id })}
           />
         ))}
         <LoadingIndicator ref={loadMoreRef}>{isFetchingNextPage && 'Carregando mais livros...'}</LoadingIndicator>
