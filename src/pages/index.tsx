@@ -10,9 +10,9 @@ import toast from 'react-hot-toast'
 const ITEMS_PER_PAGE = 10
 
 export default function Index() {
-  const [modalOpen, setModalOpen] = useState<boolean>(false)
   const observerRef = useRef<IntersectionObserver | null>(null)
   const loadMoreRef = useRef<HTMLDivElement>(null)
+  const [modalOpen, setModalOpen] = useState<boolean>(false)
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, refetch } = useInfiniteQuery({
     queryKey: ['books'],
