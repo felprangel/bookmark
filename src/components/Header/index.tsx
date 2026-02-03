@@ -23,13 +23,25 @@ const StyledHeader = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 4em;
-  min-height: 6rem;
-  box-shadow: 0px 5px 15px -3px rgba(0, 0, 0, 0.1);
+  padding: 0 3.5rem;
+  min-height: 4.75rem;
+  border-bottom: 1px solid var(--border);
+  box-shadow: none;
+
+  @media (max-width: 720px) {
+    padding: 0 1.5rem;
+  }
 `
 
 const Heading = styled.h1`
-  font-size: 2.5em;
+  font-size: 2.4rem;
   font-weight: 700;
+  color: var(--ink);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
   cursor: pointer;
+
+  @media (max-width: 720px) {
+    font-size: 1.9rem;
+  }
 `

@@ -56,11 +56,27 @@ export function BookModal(props: ModalProps) {
   }
 
   return (
-    <Dialog open={props.open} onClose={props.onClose}>
+    <Dialog
+      open={props.open}
+      onClose={props.onClose}
+      PaperProps={{
+        sx: {
+          backgroundColor: 'var(--white)',
+          border: '1px solid var(--border)',
+          borderRadius: '20px',
+          boxShadow: 'var(--shadow-soft)'
+        }
+      }}
+    >
       <StyledForm onSubmit={formik.handleSubmit}>
-        <h1>Adicionar Livro</h1>
+        <FormHeader>
+          <Title>Adicionar livro</Title>
+          <Subtitle>Registre mais uma leitura na coleção.</Subtitle>
+        </FormHeader>
         <InputContainer>
+          <Label htmlFor="title">Título</Label>
           <StyledInput
+            id="title"
             type="text"
             name="title"
             placeholder="Título"
@@ -72,7 +88,9 @@ export function BookModal(props: ModalProps) {
           {formik.touched.title && formik.errors.title && <ErrorMessage>{formik.errors.title}</ErrorMessage>}
         </InputContainer>
         <InputContainer>
+          <Label htmlFor="author">Autor</Label>
           <StyledInput
+            id="author"
             type="text"
             name="author"
             placeholder="Autor"
@@ -84,7 +102,9 @@ export function BookModal(props: ModalProps) {
           {formik.touched.author && formik.errors.author && <ErrorMessage>{formik.errors.author}</ErrorMessage>}
         </InputContainer>
         <InputContainer>
+          <Label htmlFor="pages">Páginas</Label>
           <StyledInput
+            id="pages"
             type="number"
             name="pages"
             placeholder="Páginas"
@@ -95,8 +115,19 @@ export function BookModal(props: ModalProps) {
           {formik.touched.pages && formik.errors.pages && <ErrorMessage>{formik.errors.pages}</ErrorMessage>}
         </InputContainer>
         <CheckboxContainer>
-          <h2>Lido?</h2>
-          <Checkbox name="read" onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.read} />
+          <CheckboxLabel>Lido?</CheckboxLabel>
+          <Checkbox
+            name="read"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.read}
+            sx={{
+              color: 'var(--accent)',
+              '&.Mui-checked': {
+                color: 'var(--accent)'
+              }
+            }}
+          />
         </CheckboxContainer>
         <Button type="submit">Pronto!</Button>
       </StyledForm>
@@ -108,25 +139,49 @@ const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 2em;
+  margin: 2.2rem;
+  gap: 1.1rem;
 `
 
 const InputContainer = styled.div`
   width: 100%;
   max-width: 23em;
-  margin: 0.5em 0;
   display: flex;
   flex-direction: column;
+  gap: 0.4rem;
+`
+
+const FormHeader = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin-bottom: 0.3rem;
+  text-align: center;
+`
+
+const Title = styled.h1`
+  font-size: 2rem;
+  color: var(--ink);
+`
+
+const Subtitle = styled.p`
+  color: var(--muted-ink);
+  font-size: 0.95rem;
+`
+
+const Label = styled.label`
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted-ink);
 `
 
 const StyledInput = styled.input`
-  border: none;
-  background-color: #f0eef1;
-  padding: 1.3em;
-  border-radius: 0.4em;
+  padding: 0.85rem 1rem;
+  border-radius: 0.7rem;
   width: 100%;
-  font-size: 1em;
-  font-weight: 700;
+  font-size: 1rem;
+  font-weight: 500;
   outline: none;
 `
 
@@ -141,19 +196,31 @@ const CheckboxContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 0.4rem;
+`
+
+const CheckboxLabel = styled.span`
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted-ink);
 `
 
 const Button = styled.button`
-  border: 0;
-  padding: 0.5em 1em;
+  border: 1px solid var(--accent);
+  padding: 0.75rem 1rem;
   width: 100%;
-  border-radius: 0.7em;
-  font-size: 1.3em;
+  border-radius: 999px;
+  font-size: 1rem;
   font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   outline: none;
-  transition: 150ms linear;
+  transition: 150ms ease;
+  background-color: var(--accent);
+  color: var(--white);
 
   &:hover {
-    background-color: #d9d7da;
+    background-color: var(--accent-strong);
   }
 `

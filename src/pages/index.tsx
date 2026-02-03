@@ -156,23 +156,25 @@ export default function Index() {
   return (
     <>
       <Header showRightSide />
-      <ButtonContainer>
-        <Button onClick={() => setModalOpen(true)}>+ Adicionar Livro</Button>
-      </ButtonContainer>
-      <CardsContainer>
-        {books.map(book => (
-          <BookCard
-            key={book.id}
-            title={book.title}
-            author={book.author}
-            pages={book.pages}
-            read={book.read}
-            handleRead={() => handleRead.mutate({ id: book.id, read: book.read })}
-            removeBook={() => deleteBooks.mutate({ id: book.id })}
-          />
-        ))}
-        <LoadingIndicator ref={loadMoreRef}>{isFetchingNextPage && 'Carregando mais livros...'}</LoadingIndicator>
-      </CardsContainer>
+      <Page>
+        <ButtonContainer>
+          <Button onClick={() => setModalOpen(true)}>Adicionar livro</Button>
+        </ButtonContainer>
+        <CardsContainer>
+          {books.map(book => (
+            <BookCard
+              key={book.id}
+              title={book.title}
+              author={book.author}
+              pages={book.pages}
+              read={book.read}
+              handleRead={() => handleRead.mutate({ id: book.id, read: book.read })}
+              removeBook={() => deleteBooks.mutate({ id: book.id })}
+            />
+          ))}
+          <LoadingIndicator ref={loadMoreRef}>{isFetchingNextPage && 'Carregando mais livros...'}</LoadingIndicator>
+        </CardsContainer>
+      </Page>
       <BookModal
         open={modalOpen}
         onClose={() => {
@@ -184,32 +186,47 @@ export default function Index() {
   )
 }
 
+const Page = styled.main`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2.5rem 2.5rem 3.5rem;
+
+  @media (max-width: 720px) {
+    padding: 2rem 1.5rem 3rem;
+  }
+`
+
 const ButtonContainer = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
+  margin-bottom: 2rem;
 `
 
 const Button = styled.button`
-  border: 0;
-  margin: 1.5em 0;
-  font-size: 1.4em;
+  border: 1px solid var(--accent);
+  font-size: 1rem;
   font-weight: 600;
-  padding: 0.7em 1em;
-  border-radius: 0.7em;
-  transition: 150ms linear;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.75rem 1.4rem;
+  border-radius: 999px;
+  transition: 150ms ease;
   outline: none;
+  background-color: transparent;
+  color: var(--accent-strong);
 
   &:hover {
-    background-color: var(--dark-gray);
+    background-color: var(--accent);
+    color: var(--white);
   }
 `
 
 const CardsContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
-  padding: 0em 1em 2em 1em;
-  gap: 40px;
+  padding: 0;
+  gap: 28px;
 `
 
 const LoadingIndicator = styled.div`
